@@ -234,6 +234,13 @@ namespace TechBlogAutomationLauncher
                 return false;
             }
 
+            Guid clientId;
+            if (!Guid.TryParse(clientIdBox.Text.Trim(), out clientId))
+            {
+                ShowValidation("El Application (client) ID debe ser un GUID, no un usuario ni un correo.", clientIdBox);
+                return false;
+            }
+
             return true;
         }
 
@@ -309,9 +316,17 @@ namespace TechBlogAutomationLauncher
                 "Instalar dependencia", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (answer != DialogResult.Yes) return;
 
-            string command = "Install-Module PnP.PowerShell -Scope CurrentUser -Force -AllowClobber -Repository PSGallery";
+            string installer = Path.Combine(AppDomain.CurrentDomain.BaseDirectory,
+                "scripts", "Install-PnPPowerShell.ps1");
+            if (!File.Exists(installer))
+            {
+                MessageBox.Show(this, "No se encuentra scripts\\Install-PnPPowerShell.ps1.",
+                    "Archivo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             ProcessStartInfo info = CreateProcessInfo(pwsh,
-                "-NoLogo -NoProfile -Command " + Quote(command), AppDomain.CurrentDomain.BaseDirectory);
+                "-NoLogo -NoProfile -File " + Quote(installer), AppDomain.CurrentDomain.BaseDirectory);
             await RunProcessAsync(info, "Instalación de PnP.PowerShell");
         }
 
@@ -397,7 +412,8 @@ namespace TechBlogAutomationLauncher
                 outputBox.BeginInvoke(new Action<string>(AppendOutput), value);
                 return;
             }
-            outputBox.AppendText(value);
+            string plainText = Regex.Replace(value, "\\x1B\\[[0-?]*[ -/]*[@-~]", "");
+            outputBox.AppendText(plainText);
         }
 
         private static string Quote(string value)

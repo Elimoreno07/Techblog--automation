@@ -122,6 +122,8 @@ ejecución y no se guarda en ningún archivo.
 El ejecutable debe permanecer en la raíz del proyecto, junto a `scripts/`,
 `src/` y `TechBlogAutomation.psd1`. Requiere PowerShell 7.4 o posterior; intenta
 localizarlo en la instalación del sistema y en el runtime local de Codex.
+El instalador integrado descarga la versión estable indicada desde PowerShell
+Gallery y la instala en el perfil de módulos del usuario.
 
 Para recompilar el ejecutable en Windows:
 
