@@ -107,6 +107,30 @@ almacén seguro. Nunca subas el `.pfx` ni su contraseña.
 
 ## Ejecución
 
+### Interfaz gráfica para Windows
+
+Haz doble clic en `TechBlogAutomation.exe`, situado en la raíz del proyecto.
+La ventana permite introducir la versión, fecha, año, post base y el Application
+(client) ID de Entra. Este identificador se pasa únicamente al proceso en
+ejecución y no se guarda en ningún archivo.
+
+1. Si es la primera ejecución, pulsa **Instalar PnP.PowerShell**.
+2. Completa los campos y pulsa **Crear vista previa**.
+3. Revisa el archivo generado dentro de `preview/`.
+4. Cuando sea correcto, pulsa **Publicar en SharePoint** y confirma la acción.
+
+El ejecutable debe permanecer en la raíz del proyecto, junto a `scripts/`,
+`src/` y `TechBlogAutomation.psd1`. Requiere PowerShell 7.4 o posterior; intenta
+localizarlo en la instalación del sistema y en el runtime local de Codex.
+
+Para recompilar el ejecutable en Windows:
+
+```powershell
+powershell.exe -ExecutionPolicy Bypass -File .\scripts\Build-Launcher.ps1
+```
+
+### Línea de comandos
+
 El comando predeterminado **solo crea una vista previa JSON** y no añade nada a
 SharePoint:
 
